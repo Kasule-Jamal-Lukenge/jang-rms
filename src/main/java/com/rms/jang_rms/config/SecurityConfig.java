@@ -35,6 +35,7 @@ public class SecurityConfig {
                 .exceptionHandling(ex -> ex.authenticationEntryPoint(unauthorizedHandler))
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/auth/**").permitAll()
+                        .requestMatchers("/auth/logout").permitAll()
                         .requestMatchers(HttpMethod.GET, "/properties/**").permitAll()
                         .anyRequest().authenticated()
                 )
