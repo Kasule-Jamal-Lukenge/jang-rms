@@ -47,7 +47,7 @@ public class User implements UserDetails {
                 .map(p->new SimpleGrantedAuthority(p.getName()))
                 .collect(Collectors.toList());
 
-        // Add role name as authority
+        // Adding role name as authority
         authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
 
         return authorities;
@@ -57,18 +57,22 @@ public class User implements UserDetails {
     public String getUsername() {
         return email;
     }
+
     @Override
     public boolean isAccountNonExpired() {
         return true;
     }
+
     @Override
     public boolean isAccountNonLocked() {
         return true;
     }
+
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     }
+
     @Override
     public boolean isEnabled(){
         return true;

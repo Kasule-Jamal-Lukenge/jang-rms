@@ -20,8 +20,10 @@ public class UserController {
     }
 
     @GetMapping
-    public ResponseEntity<?> getAllUsers() {
-        return ResponseEntity.ok(userService.getAllUsers());
+    public ResponseEntity<?> getAllUsers(@RequestParam(defaultValue = "0") int page,
+                                         @RequestParam(defaultValue = "10") int size,
+                                         @RequestParam(required = false) String search) {
+        return ResponseEntity.ok(userService.getAllUsers(page, size, search));
     }
 
     @GetMapping("/{id}")

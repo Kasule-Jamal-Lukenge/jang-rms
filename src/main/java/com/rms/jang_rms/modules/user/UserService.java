@@ -7,6 +7,9 @@ import com.rms.jang_rms.dtos.UserUpdateRequest;
 import com.rms.jang_rms.modules.role.Role;
 import com.rms.jang_rms.modules.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -67,11 +70,13 @@ public class UserService implements UserDetailsService {
         return mapToResponse(user);
     }
 
-    public List<UserResponse> getAllUsers() {
-        return userRepository.findAll()
-                .stream()
-                .map(this::mapToResponse)
-                .toList();
+    public Page<User> getAllUsers(int page, int size, String search) {
+        Pageable pageable = PageRequest.of(page, size);
+        if(search !=null && !search.isEmpty()) {
+            return userRepository.searchUsers(search.toLowerCase(), pageable);
+        }
+
+        return userRepository.findAll(pageable);
     }
 
     public UserResponse getUser(long id){
