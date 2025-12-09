@@ -17,15 +17,15 @@ public class SeedDataConfig {
     CommandLineRunner initRoles() {
         return args -> {
 
-            if (!roleRepository.existsByName("PUBLIC_USER")) {
+            if (roleRepository.existsByName("PUBLIC_USER")) {
                 roleRepository.save(Role.builder().name("PUBLIC_USER").build());
             }
 
-            if (!roleRepository.existsByName("TENANT")) {
+            if (roleRepository.existsByName("TENANT")) {
                 roleRepository.save(Role.builder().name("TENANT").build());
             }
 
-            if (!roleRepository.existsByName("ADMIN")) {
+            if (roleRepository.existsByName("ADMIN")) {
                 roleRepository.save(Role.builder().name("ADMIN").build());
             }
         };

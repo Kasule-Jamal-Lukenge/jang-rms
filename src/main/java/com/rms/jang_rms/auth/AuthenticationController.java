@@ -19,22 +19,22 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthenticationController {
 
     @Autowired
-    private final AuthenticationService service;
+    private final AuthenticationService AuthService;
     private final BlacklistedTokenRepository blacklistedTokenRepository;
 
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(service.register(request));
+        return ResponseEntity.ok(AuthService.register(request));
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest request) {
-        return ResponseEntity.ok(service.login(request));
+        return ResponseEntity.ok(AuthService.login(request));
     }
 
     @PostMapping("/refresh")
     public ResponseEntity<AuthResponse> refresh(@RequestBody RefreshTokenRequest request) {
-        return ResponseEntity.ok(service.refresh(request));
+        return ResponseEntity.ok(AuthService.refresh(request));
     }
 
     @PostMapping("/logout")

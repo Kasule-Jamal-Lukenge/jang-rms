@@ -18,4 +18,7 @@ public class Permission {
 
     @Column(unique=true, nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    private String description;
 }

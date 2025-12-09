@@ -23,6 +23,9 @@ public class Role {
     @Column(unique=true)
     private String name;
 
+    @Column(nullable=false)
+    private String description;
+
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Permission> permissions = new HashSet<>();
 }
