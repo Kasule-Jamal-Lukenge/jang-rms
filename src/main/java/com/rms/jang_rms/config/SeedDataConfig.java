@@ -1,33 +1,75 @@
 package com.rms.jang_rms.config;
 
+import com.rms.jang_rms.modules.permission.Permission;
+import com.rms.jang_rms.modules.permission.PermissionRepository;
 import com.rms.jang_rms.modules.role.Role;
 import com.rms.jang_rms.modules.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-// CommandLineRunner To Auto-Create The ADMIN, TENANT AND PUBLIC USER_ROLES IN THE DATABASE
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+
 @Configuration
 @RequiredArgsConstructor
-public class SeedDataConfig {
-    private final RoleRepository roleRepository;
+public class SeedDataConfig implements CommandLineRunner {
 
-    @Bean
-    CommandLineRunner initRoles() {
-        return args -> {
+    private final RoleRepository roleRepo;
+    private final PermissionRepository permRepo;
 
-            if (roleRepository.existsByName("PUBLIC_USER")) {
-                roleRepository.save(Role.builder().name("PUBLIC_USER").build());
-            }
+    @Override
+    public void run(String... args) {
 
-            if (roleRepository.existsByName("TENANT")) {
-                roleRepository.save(Role.builder().name("TENANT").build());
-            }
+        // 1️⃣ Seed permissions ONLY if empty
+        if (permRepo.count() == 0) {
+            permRepo.save(Permission.builder()
+                    .name("PROPERTY_VIEW")
+                    .description("Can view properties")
+                    .build());
 
-            if (roleRepository.existsByName("ADMIN")) {
-                roleRepository.save(Role.builder().name("ADMIN").build());
-            }
-        };
+            permRepo.save(Permission.builder()
+                    .name("PROPERTY_CREATE")
+                    .description("Can create new properties")
+                    .build());
+
+            permRepo.save(Permission.builder()
+                    .name("BOOKING_APPROVE")
+                    .description("Can approve bookings")
+                    .build());
+
+            permRepo.save(Permission.builder()
+                    .name("PAYMENT_REFUND")
+                    .description("Can refund payments")
+                    .build());
+
+            permRepo.save(Permission.builder()
+                    .name("ADD_USERS")
+                    .description("Can add Users")
+                    .build());
+        }
+
+        // 2️⃣ Seed roles ONLY if empty
+        if (roleRepo.count() == 0) {
+            List<Permission> allPerms = permRepo.findAll();
+            Set<Permission> adminPerms = new HashSet<>(allPerms);
+
+            Role admin = Role.builder()
+                    .name("ADMIN")
+                    .description("System Administrator")
+                    .permissions(adminPerms)
+                    .build();
+
+            roleRepo.save(admin);
+
+            Role publicUser = Role.builder()
+                    .name("PUBLIC_USER")
+                    .description("Public User")
+                    .permissions(new HashSet<>())
+                    .build();
+
+            roleRepo.save(publicUser);
+        }
     }
 }

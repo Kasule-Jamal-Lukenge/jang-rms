@@ -38,6 +38,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(req -> req
                         .requestMatchers("/auth/**").permitAll()
                         .requestMatchers("/auth/logout").permitAll()
+                         // USER MANAGEMENT (Admin Only)
+                        .requestMatchers("/users/**").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/properties/**").permitAll()
                         .anyRequest().authenticated()
                 )
