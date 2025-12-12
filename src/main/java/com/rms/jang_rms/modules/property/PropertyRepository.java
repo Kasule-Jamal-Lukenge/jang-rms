@@ -1,4 +1,6 @@
 package com.rms.jang_rms.modules.property;
 
-public interface PropertyRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PropertyRepository extends JpaRepository<Property, Long> {
 }
