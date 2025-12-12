@@ -33,9 +33,6 @@ public class Property {
     @Enumerated(EnumType.STRING)
     private PropertyStatus status = PropertyStatus.AVAILABLE;
 
-    @ElementCollection
-    private List<String> images = new ArrayList<>();
-
     @ManyToOne
     private User owner;
 

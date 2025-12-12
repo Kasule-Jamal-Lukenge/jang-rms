@@ -42,8 +42,8 @@ public class PropertyController {
         return ResponseEntity.ok("Property Deleted Successfully");
     }
 
-    @PostMapping("/{propertyId}/upload")
-    public ResponseEntity<?> uploadImage(@PathVariable Long propertyId, @RequestParam("file") MultipartFile file){
-        return ResponseEntity.ok(propertyService.uploadImage(propertyId, file));
-    }
+//    @PostMapping("/{propertyId}/upload")
+//    public ResponseEntity<?> uploadImage(@PathVariable Long propertyId, @RequestParam("file") MultipartFile file){
+//        return ResponseEntity.ok(propertyService.uploadImage(propertyId, file));
+//    }
 }

@@ -1,6 +1,6 @@
 package com.rms.jang_rms.modules.property;
 
-import com.rms.jang_rms.cloud.CloudinaryService;
+//import com.rms.jang_rms.cloud.CloudinaryService;
 import com.rms.jang_rms.modules.user.User;
 import com.rms.jang_rms.modules.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +14,7 @@ import java.util.List;
 public class PropertyService {
 
     private final PropertyRepository propertyRepository;
-    private final CloudinaryService cloudinaryService;
+//    private final CloudinaryService cloudinaryService;
     private final UserRepository userRepository;
 
     public Property createProperty(Property property, Long ownerId){
@@ -47,10 +47,10 @@ public class PropertyService {
         propertyRepository.deleteById(propertyId);
     }
 
-    public Property uploadImage(Long propertyId, MultipartFile file){
-        Property property = getPropertyById(propertyId);
-        String imageUrl = cloudinaryService.uploadImage(file);
-        property.getImages().add(imageUrl);
-        return propertyRepository.save(property);
-    }
+//    public Property uploadImage(Long propertyId, MultipartFile file){
+//        Property property = getPropertyById(propertyId);
+//        String imageUrl = cloudinaryService.uploadImage(file);
+//        property.getImages().add(imageUrl);
+//        return propertyRepository.save(property);
+//    }
 }
