@@ -40,7 +40,9 @@ public class SecurityConfig {
                         .requestMatchers("/auth/logout").permitAll()
                          // USER MANAGEMENT (Admin Only)
                         .requestMatchers("/users/**").hasRole("ADMIN")
+                         // PROPERTIES MANAGEMENT
                         .requestMatchers(HttpMethod.GET, "/properties/**").permitAll()
+                        .requestMatchers("/properties/**").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
