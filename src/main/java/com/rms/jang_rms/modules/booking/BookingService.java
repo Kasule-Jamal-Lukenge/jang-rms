@@ -25,7 +25,7 @@ public class BookingService {
         return userRepository.findByEmail(email).orElseThrow(() -> new RuntimeException("User Not Found"));
     }
 
-    private Booking createBooking(CreateBookingRequest createBookingRequest){
+    public Booking createBooking(CreateBookingRequest createBookingRequest){
         User tenant = getLoggedInUser();
         Property property = propertyRepository.findById(createBookingRequest.getPropertyId()).orElseThrow(() -> new RuntimeException("Property Not Found"));
         Booking booking = Booking.builder()

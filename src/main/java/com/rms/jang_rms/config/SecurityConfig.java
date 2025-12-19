@@ -43,6 +43,12 @@ public class SecurityConfig {
                          // PROPERTIES MANAGEMENT
                         .requestMatchers(HttpMethod.GET, "/properties/**").permitAll()
                         .requestMatchers("/properties/**").hasRole("ADMIN")
+                        // BOOKINGS MANAGEMENT
+                        .requestMatchers(HttpMethod.POST, "/bookings/**").hasRole("TENANT")
+                        .requestMatchers("/bookings/my").hasRole("TENANT")
+                        .requestMatchers("/bookings").hasAnyRole("ADMIN", "OWNER")
+                        // PAYMENTS MANAGEMENT
+                        .requestMatchers(HttpMethod.POST, "/payments").hasRole("TENANT")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess

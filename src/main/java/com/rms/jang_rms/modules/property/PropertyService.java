@@ -1,6 +1,7 @@
 package com.rms.jang_rms.modules.property;
 
 //import com.rms.jang_rms.cloud.CloudinaryService;
+import com.rms.jang_rms.enums.PropertyStatus;
 import com.rms.jang_rms.modules.user.User;
 import com.rms.jang_rms.modules.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,7 @@ public class PropertyService {
 
     public Property updateProperty(Long propertyId, Property updatedProperty){
         Property property = getPropertyById(propertyId);
+        
         property.setTitle(updatedProperty.getTitle());
         property.setDescription(updatedProperty.getDescription());
         property.setLocation(updatedProperty.getLocation());
@@ -41,6 +43,7 @@ public class PropertyService {
         property.setStatus(updatedProperty.getStatus());
 
         return propertyRepository.save(property);
+
     }
 
     public void deleteProperty(Long propertyId){
