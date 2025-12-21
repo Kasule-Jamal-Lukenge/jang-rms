@@ -49,7 +49,7 @@ public class SecurityConfig {
                         .requestMatchers("/bookings").hasAnyRole("ADMIN", "OWNER")
                         .requestMatchers(HttpMethod.PUT, "/bookings/**").hasAnyRole("ADMIN", "OWNER")
                         // PAYMENTS MANAGEMENT
-                        .requestMatchers(HttpMethod.POST, "/payments").hasRole("TENANT")
+                        .requestMatchers(HttpMethod.POST, "/payments").hasAnyRole("ADMIN", "TENANT")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
