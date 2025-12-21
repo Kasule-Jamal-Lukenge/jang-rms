@@ -47,6 +47,7 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/bookings/**").hasRole("TENANT")
                         .requestMatchers("/bookings/my").hasRole("TENANT")
                         .requestMatchers("/bookings").hasAnyRole("ADMIN", "OWNER")
+                        .requestMatchers(HttpMethod.PUT, "/bookings/**").hasAnyRole("ADMIN", "OWNER")
                         // PAYMENTS MANAGEMENT
                         .requestMatchers(HttpMethod.POST, "/payments").hasRole("TENANT")
                         .anyRequest().authenticated()
