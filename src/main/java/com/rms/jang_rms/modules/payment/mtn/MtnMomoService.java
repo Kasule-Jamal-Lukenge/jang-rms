@@ -62,15 +62,15 @@ public class MtnMomoService {
         String body = """
         {
           "amount": "%s",
-          "currency": "UGX,
+          "currency": "UGX",
           "externalId": "%s",
           "payer": {
             "partyIdType": "MSISDN",
-            "partyId": "%s",
+            "partyId": "%s"
           },
           "payerMessage": "Rental Payment",
           "payeeNote": "Rental Service",
-          "callbackUrl": "%s",
+          "callbackUrl": "%s"
         }
         """.formatted(amount, booking.getId(), payer.getContact(), mtnMomoConfig.getCallbackUrl());
 
@@ -92,7 +92,7 @@ public class MtnMomoService {
 
     // STEP 3: Check Payment Status
     public String checkTransactionStatus(String transactionId){
-        String url = mtnMomoConfig.getBaseUrl() + "/requesttopay" + transactionId;
+        String url = mtnMomoConfig.getBaseUrl() + "/requesttopay/" + transactionId;
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + getAccessToken());

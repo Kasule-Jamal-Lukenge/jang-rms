@@ -19,4 +19,10 @@ public class PaymentController {
     public ResponseEntity<?> addPayment(@RequestBody PaymentRequest paymentRequest){
         return ResponseEntity.ok(paymentService.processPayment(paymentRequest));
     }
+
+    @PostMapping("/payments/mtn/callback")
+    public ResponseEntity<String> handleMtnCallback(@RequestBody String payload){
+        System.out.println("MTN Callback Received: " + payload);
+        return ResponseEntity.ok("MTN Callback Received");
+    }
 }
