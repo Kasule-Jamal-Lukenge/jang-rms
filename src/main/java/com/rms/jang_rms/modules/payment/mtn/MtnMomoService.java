@@ -90,7 +90,7 @@ public class MtnMomoService {
         return paymentRepository.save(payment);
     }
 
-    // STEP 3: Check Payment Status
+    // Checking Payment Status
     public String checkTransactionStatus(String transactionId){
         String url = mtnMomoConfig.getBaseUrl() + "/requesttopay/" + transactionId;
 

@@ -50,6 +50,9 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PUT, "/bookings/**").hasAnyRole("ADMIN", "OWNER")
                         // PAYMENTS MANAGEMENT
                         .requestMatchers(HttpMethod.POST, "/payments").hasAnyRole("ADMIN", "TENANT")
+                        // DASHBOARD ACCESS
+                        .requestMatchers("/dashboard/admin").hasRole("ADMIN")
+                        .requestMatchers("dashboard/owner").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .sessionManagement(sess -> sess
