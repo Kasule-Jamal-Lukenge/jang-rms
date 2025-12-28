@@ -2,6 +2,8 @@ package com.rms.jang_rms.modules.booking;
 
 import com.rms.jang_rms.dtos.CreateBookingRequest;
 import com.rms.jang_rms.enums.BookingStatus;
+import com.rms.jang_rms.enums.NotificationType;
+import com.rms.jang_rms.modules.notification.NotificationService;
 import com.rms.jang_rms.modules.property.Property;
 import com.rms.jang_rms.modules.property.PropertyRepository;
 import com.rms.jang_rms.modules.user.User;
@@ -19,6 +21,7 @@ public class BookingService {
     private final BookingRepository bookingRepository;
     private final PropertyRepository propertyRepository;
     private final UserRepository userRepository;
+    private final NotificationService notificationService;
 
     private User getLoggedInUser(){
         String email = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -37,7 +40,27 @@ public class BookingService {
                 .status(BookingStatus.PENDING)
                 .build();
 
-        return bookingRepository.save(booking);
+        bookingRepository.save(booking);
+
+        // notifying the admin of the booking
+        User admin = userRepository.findFirstByRoleName("ROLE_ADMIN").orElseThrow(() -> new RuntimeException("Admin Not Found"));
+        notificationService.notify(
+                admin,
+                "New Booking Request",
+                tenant.getFirstName() + tenant.getLastName() + " requested to book property: " + property.getTitle(),
+                NotificationType.BOOKING_REQUEST
+        );
+
+        // notifying the property owner of the booking
+        User owner = property.getOwner();
+        notificationService.notify(
+                owner,
+                "New Booking Request",
+                tenant.getFirstName() + tenant.getLastName() + " requested to book your property: " + property.getTitle(),
+                NotificationType.BOOKING_REQUEST
+        );
+
+        return booking;
     }
 
     public List<Booking> getBookingsForTenant(){
@@ -64,7 +87,18 @@ public class BookingService {
         booking.setStatus(BookingStatus.APPROVED);
         booking.getProperty().setStatus(com.rms.jang_rms.enums.PropertyStatus.BOOKED);
 
-        return bookingRepository.save(booking);
+        Booking approvedBooking = bookingRepository.save(booking);
+
+        // Notifying the user that the booking has been approved
+        notificationService.notify(
+                booking.getTenant(),
+                "Booking Approved",
+                "Your booking for " + booking.getProperty().getTitle() + " has been approved.",
+                NotificationType.BOOKING_APPROVED
+        );
+
+//        return bookingRepository.save(booking);
+        return approvedBooking;
     }
 
     public Booking rejectBooking(Long bookingId){
@@ -80,7 +114,17 @@ public class BookingService {
 
         booking.setStatus(BookingStatus.REJECTED);
 
-        return bookingRepository.save(booking);
+        Booking rejectedBooking = bookingRepository.save(booking);
+
+        // notifying the user that the booking has been rejected
+        notificationService.notify(
+                booking.getTenant(),
+                "Booking Rejected",
+                "Your booking for " + booking.getProperty().getTitle() + " has been rejected.",
+                NotificationType.BOOKING_REJECTED
+        );
+
+        return rejectedBooking;
     }
 
     public Booking activateBooking(Long bookingId){
@@ -89,6 +133,16 @@ public class BookingService {
         booking.setStatus(BookingStatus.ACTIVE);
         booking.getProperty().setStatus(com.rms.jang_rms.enums.PropertyStatus.OCCUPIED);
 
-        return bookingRepository.save(booking);
+        Booking activatedBooking = bookingRepository.save(booking);
+
+        // notifying the user that the booking has been activated
+        notificationService.notify(
+                booking.getTenant(),
+                "Booking Activated",
+                "Your booking for " + booking.getProperty().getTitle() + " is now ACTIVE.",
+                NotificationType.BOOKING_ACTIVATED
+        );
+
+        return activatedBooking;
     }
 }
